@@ -3,6 +3,7 @@ import AvengersGrid from "@/components/AvengersGrid";
 import SagaTimeline from "@/components/SagaTimeline";
 import SponsorMultiverse from "@/components/SponsorMultiverse";
 import ShieldCommand from "@/components/ShieldCommand";
+import MissionBrief from "@/components/MissionBrief";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -13,6 +14,7 @@ const Index = () => {
       <SagaTimeline />
       <SponsorMultiverse />
       <ShieldCommand />
+      <MissionBrief />
       <Footer />
     </main>
   );

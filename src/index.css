@@ -43,6 +43,10 @@
     --crest-blue: 217 91% 60%;
     --crest-green: 142 71% 45%;
     
+    /* Tactical Colors */
+    --tactical-blue: 200 80% 50%;
+    --tactical-green: 160 70% 45%;
+    
     /* Glow effects */
     --glow-red: 0 100% 50%;
     --glow-yellow: 48 100% 50%;
@@ -73,6 +77,11 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Orbitron', sans-serif;
   }
+  
+  /* Full page scroll snap */
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer components {
@@ -95,6 +104,10 @@
   .glow-green {
     box-shadow: 0 0 30px hsl(var(--glow-green) / 0.4), 0 0 60px hsl(var(--glow-green) / 0.2);
   }
+  
+  .glow-tactical {
+    box-shadow: 0 0 30px hsl(var(--tactical-blue) / 0.4), 0 0 60px hsl(var(--tactical-blue) / 0.2);
+  }
 
   .text-gradient-crest {
     @apply bg-gradient-to-r from-crest-red via-crest-yellow to-crest-blue bg-clip-text text-transparent;
@@ -112,6 +125,63 @@
       hsl(0 0% 100% / 0.02) 2px,
       hsl(0 0% 100% / 0.02) 4px
     );
+  }
+  
+  .bg-radial-gradient {
+    background: radial-gradient(ellipse at center, transparent 0%, hsl(var(--background)) 70%);
+  }
+  
+  /* Snap sections */
+  .snap-section {
+    scroll-snap-align: start;
+  }
+  
+  /* Glitch text effect */
+  .glitch-text {
+    position: relative;
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .glitch-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .glitch-layer-1 {
+    color: hsl(var(--crest-red));
+    animation: glitch-1 2s infinite linear alternate-reverse;
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  }
+  
+  .glitch-layer-2 {
+    color: hsl(var(--crest-blue));
+    animation: glitch-2 3s infinite linear alternate-reverse;
+    clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+  }
+  
+  /* 3D perspective */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  /* Tactical grid background */
+  .tactical-grid {
+    background-image: 
+      linear-gradient(hsl(var(--tactical-blue) / 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--tactical-blue) / 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  /* Data ticker */
+  .data-ticker {
+    animation: ticker 20s linear infinite;
   }
 }
 
@@ -161,6 +231,48 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@keyframes glitch-1 {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-2px);
+  }
+  40% {
+    transform: translateX(2px);
+  }
+  60% {
+    transform: translateX(-1px);
+  }
+  80% {
+    transform: translateX(1px);
+  }
+}
+
+@keyframes glitch-2 {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(2px);
+  }
+  50% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(1px);
+  }
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }
 

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Mail, Instagram, Twitter, Linkedin } from "lucide-react";
+import { Mail, Phone, MapPin, Instagram, Twitter, Linkedin } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -18,9 +18,14 @@ const Footer = () => {
                   </span>
                 </div>
               </div>
-              <span className="font-display text-xl font-bold tracking-wider text-foreground">
-                CREST
-              </span>
+              <div>
+                <span className="font-display text-xl font-bold tracking-wider text-foreground block">
+                  CREST
+                </span>
+                <span className="font-display text-xs tracking-widest text-muted-foreground">
+                  INNOVATION STUDIO
+                </span>
+              </div>
             </div>
             <p className="text-muted-foreground text-sm max-w-xs">
               The ultimate technical showdown. Assemble your squad and prove your worth in the Endgame.
@@ -46,13 +51,47 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact - Tactical Dossier Style */}
           <div>
             <h4 className="font-display text-sm tracking-widest text-foreground mb-4">
-              CONNECT
+              TACTICAL CONTACT
             </h4>
-            <div className="flex gap-4 mb-4">
-              {[Instagram, Twitter, Linkedin, Mail].map((Icon, index) => (
+            <div className="space-y-4">
+              {/* Venue */}
+              <div className="flex items-start gap-3 glass-card p-3 rounded-lg">
+                <MapPin className="w-4 h-4 text-crest-red mt-0.5" />
+                <div>
+                  <span className="font-display text-xs tracking-widest text-muted-foreground block">VENUE</span>
+                  <span className="text-foreground text-sm">Innovation Studio, LPU</span>
+                </div>
+              </div>
+              
+              {/* Email */}
+              <div className="flex items-start gap-3 glass-card p-3 rounded-lg">
+                <Mail className="w-4 h-4 text-crest-yellow mt-0.5" />
+                <div>
+                  <span className="font-display text-xs tracking-widest text-muted-foreground block">GMAIL</span>
+                  <a href="mailto:sharmasaksham1605@gmail.com" className="text-foreground text-sm hover:text-crest-yellow transition-colors">
+                    sharmasaksham1605@gmail.com
+                  </a>
+                </div>
+              </div>
+              
+              {/* Phone */}
+              <div className="flex items-start gap-3 glass-card p-3 rounded-lg">
+                <Phone className="w-4 h-4 text-crest-green mt-0.5" />
+                <div>
+                  <span className="font-display text-xs tracking-widest text-muted-foreground block">PHONE</span>
+                  <a href="tel:+918957630319" className="text-foreground text-sm hover:text-crest-green transition-colors">
+                    +91 8957630319
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            {/* Social icons */}
+            <div className="flex gap-4 mt-6">
+              {[Instagram, Twitter, Linkedin].map((Icon, index) => (
                 <motion.a
                   key={index}
                   href="#"
@@ -64,16 +103,13 @@ const Footer = () => {
                 </motion.a>
               ))}
             </div>
-            <p className="text-muted-foreground text-sm">
-              crest@lpu.edu
-            </p>
           </div>
         </div>
 
         {/* Bottom */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="font-display text-xs tracking-wider text-muted-foreground">
-            © 2025 CREST | LPU CAMPUS
+            © 2025 CREST | INNOVATION STUDIO | LPU CAMPUS
           </p>
           <p className="font-display text-xs tracking-wider text-muted-foreground">
             WHATEVER IT TAKES

@@ -60,6 +60,9 @@ export default {
         "crest-yellow": "hsl(var(--crest-yellow))",
         "crest-blue": "hsl(var(--crest-blue))",
         "crest-green": "hsl(var(--crest-green))",
+        // Tactical Colors
+        "tactical-blue": "hsl(var(--tactical-blue))",
+        "tactical-green": "hsl(var(--tactical-green))",
         // Glass
         glass: "hsl(var(--glass))",
         "glass-border": "hsl(var(--glass-border))",
