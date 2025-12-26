@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { Swords, Infinity as InfinityIcon, Hand } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -14,14 +14,13 @@ interface Round {
   accentColorClass: string;
   accentBgClass: string;
   features: string[];
-  effect: "civilwar" | "infinity" | "endgame";
 }
 
 const rounds: Round[] = [
   {
-    id: 1,
+    id: 0,
     title: "CIVIL WAR",
-    subtitle: "ROUND 1",
+    subtitle: "ROUND 1: STABLE",
     theme: "The Flex Protocol",
     description: "Internal rivalry begins. Teams compete head-to-head in rapid-fire coding challenges. Only the strongest will advance to face the greater threat.",
     gradientClass: "from-crest-red to-crest-blue",
@@ -29,12 +28,11 @@ const rounds: Round[] = [
     accentColorClass: "text-crest-red",
     accentBgClass: "bg-crest-red/20",
     features: ["1v1 Code Battles", "Algorithm Showdown", "Speed Debugging"],
-    effect: "civilwar",
   },
   {
-    id: 2,
+    id: 1,
     title: "INFINITY WAR",
-    subtitle: "ROUND 2",
+    subtitle: "ROUND 2: BRANCHING",
     theme: "The Manifestation",
     description: "The stakes are raised. Build something extraordinary as teams race to manifest their vision before the snap erases half the competition.",
     gradientClass: "from-purple-600 to-crest-yellow",
@@ -42,12 +40,11 @@ const rounds: Round[] = [
     accentColorClass: "text-crest-yellow",
     accentBgClass: "bg-crest-yellow/20",
     features: ["Full Stack Sprint", "Integration Challenge", "The Snap Elimination"],
-    effect: "infinity",
   },
   {
-    id: 3,
+    id: 2,
     title: "ENDGAME",
-    subtitle: "ROUND 3",
+    subtitle: "ROUND 3: NEXUS POINT",
     theme: "The Ultimate Clutch",
     description: "Whatever it takes. The final survivors face the ultimate challenge. Only one team will wield the Nano-Gauntlet of victory.",
     gradientClass: "from-slate-700 to-teal-500",
@@ -55,128 +52,85 @@ const rounds: Round[] = [
     accentColorClass: "text-crest-green",
     accentBgClass: "bg-crest-green/20",
     features: ["24-Hour Grand Finale", "Industry Jury", "The Gauntlet Award"],
-    effect: "endgame",
   },
 ];
 
-// Civil War diagonal split effect
-const CivilWarEffect = () => (
-  <div className="absolute inset-0 overflow-hidden rounded-xl pointer-events-none">
-    {/* Red diagonal */}
-    <motion.div
-      className="absolute -left-1/2 top-0 w-full h-full bg-gradient-to-r from-crest-red/30 to-transparent"
-      style={{ transform: "skewX(-15deg)" }}
-      animate={{ x: [-20, 0, -20] }}
-      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-    />
-    {/* Blue diagonal */}
-    <motion.div
-      className="absolute -right-1/2 top-0 w-full h-full bg-gradient-to-l from-crest-blue/30 to-transparent"
-      style={{ transform: "skewX(15deg)" }}
-      animate={{ x: [20, 0, 20] }}
-      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-    />
-    {/* Scanning line */}
-    <motion.div
-      className="absolute left-0 right-0 h-0.5 bg-foreground/20"
-      animate={{ top: ["0%", "100%", "0%"] }}
-      transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-    />
-  </div>
-);
-
-// Infinity War stardust effect
-const InfinityEffect = () => (
-  <div className="absolute inset-0 overflow-hidden rounded-xl pointer-events-none">
-    {/* Pulsing purple/gold border */}
-    <motion.div
-      className="absolute inset-0 rounded-xl"
-      style={{
-        background: "linear-gradient(135deg, hsl(280, 70%, 50%) 0%, hsl(48, 96%, 53%) 100%)",
-        opacity: 0.2,
-      }}
-      animate={{ opacity: [0.1, 0.3, 0.1] }}
-      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-    />
-    {/* Stardust particles */}
-    {Array.from({ length: 15 }).map((_, i) => (
+const TimelineNode = ({ 
+  round, 
+  isActive, 
+  onClick 
+}: { 
+  round: Round; 
+  isActive: boolean; 
+  onClick: () => void;
+}) => {
+  const Icon = round.icon;
+  
+  return (
+    <div 
+      className="relative flex flex-col items-center cursor-pointer group z-10"
+      onClick={onClick}
+    >
+      {/* The Node Dot */}
       <motion.div
-        key={i}
-        className="absolute w-1 h-1 bg-crest-yellow rounded-full"
-        style={{
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-        }}
         animate={{
-          opacity: [0, 1, 0],
-          scale: [0, 1.5, 0],
+          scale: isActive ? 1.3 : 1,
         }}
-        transition={{
-          duration: 2 + Math.random() * 2,
-          delay: Math.random() * 2,
-          repeat: Infinity,
-        }}
-      />
-    ))}
-  </div>
-);
-
-// Endgame glitch effect
-const EndgameEffect = () => (
-  <div className="absolute inset-0 overflow-hidden rounded-xl pointer-events-none">
-    {/* RGB Chromatic aberration */}
-    <motion.div
-      className="absolute inset-0 mix-blend-screen"
-      animate={{
-        boxShadow: [
-          "inset 2px 0 0 hsl(var(--crest-red) / 0.3), inset -2px 0 0 hsl(var(--tactical-blue) / 0.3)",
-          "inset -2px 0 0 hsl(var(--crest-red) / 0.3), inset 2px 0 0 hsl(var(--tactical-blue) / 0.3)",
-        ],
-      }}
-      transition={{ type: "tween", duration: 0.2, repeat: Infinity, repeatType: "mirror", ease: "linear" }}
-    />
-    {/* Glitch flicker */}
-    <motion.div
-      className="absolute inset-0 bg-foreground/5"
-      animate={{ opacity: [0, 0.1, 0, 0.05, 0] }}
-      transition={{ duration: 0.5, repeat: Infinity, times: [0, 0.1, 0.2, 0.3, 1] }}
-    />
-    {/* Horizontal glitch lines */}
-    <motion.div
-      className="absolute left-0 right-0 h-1 bg-teal-500/30"
-      animate={{ 
-        top: ["20%", "80%", "40%", "60%", "20%"],
-        scaleX: [1, 0.8, 1, 0.9, 1],
-      }}
-      transition={{ duration: 2, repeat: Infinity }}
-    />
-  </div>
-);
-
-const getEffect = (effect: Round["effect"]) => {
-  switch (effect) {
-    case "civilwar":
-      return <CivilWarEffect />;
-    case "infinity":
-      return <InfinityEffect />;
-    case "endgame":
-      return <EndgameEffect />;
-  }
+        transition={{ type: "tween", duration: 0.3 }}
+        className={`relative w-14 h-14 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+          isActive 
+            ? 'bg-crest-yellow border-foreground shadow-[0_0_20px_5px_rgba(255,215,0,0.8)]' 
+            : 'bg-background border-crest-yellow/50 group-hover:border-crest-yellow'
+        }`}
+      >
+        <Icon className={`w-6 h-6 transition-colors ${isActive ? 'text-background' : 'text-crest-yellow'}`} />
+        
+        {/* Pulsing ring when active */}
+        {isActive && (
+          <motion.div
+            className="absolute inset-0 rounded-full border-2 border-crest-yellow"
+            animate={{ scale: [1, 1.5], opacity: [0.8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
+        )}
+      </motion.div>
+      
+      {/* Label */}
+      <motion.span 
+        className={`absolute top-20 whitespace-nowrap font-mono text-xs tracking-widest transition-all duration-300 ${
+          isActive ? 'text-crest-yellow' : 'text-muted-foreground group-hover:text-foreground'
+        }`}
+        animate={{ opacity: isActive ? 1 : 0.6 }}
+        transition={{ type: "tween" }}
+      >
+        {round.subtitle}
+      </motion.span>
+    </div>
+  );
 };
 
 const SagaTimeline = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <section ref={containerRef} className="py-24 px-4 relative overflow-hidden min-h-screen">
-      {/* Background gradient */}
+    <section className="py-24 px-4 relative overflow-hidden min-h-screen">
+      {/* SHIELD-style Background Grid */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/20 to-background" />
+      <div 
+        className="absolute inset-0 opacity-20" 
+        style={{ 
+          backgroundImage: 'linear-gradient(hsl(48 96% 53%) 1px, transparent 1px), linear-gradient(90deg, hsl(48 96% 53%) 1px, transparent 1px)', 
+          backgroundSize: '40px 40px' 
+        }} 
+      />
+      
+      {/* Scanline overlay */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px)'
+        }}
+      />
       
       <div className="container mx-auto relative">
         {/* Section Header */}
@@ -197,97 +151,193 @@ const SagaTimeline = () => {
             PHASE 3: THE THREE ROUNDS
           </motion.span>
           <h2 className="font-display text-3xl md:text-5xl font-black tracking-wider mb-4">
-            <span className="text-foreground">THE THREE-STAGE</span>{" "}
-            <span className="text-crest-yellow">SAGA</span>
+            <span className="text-foreground">THE SACRED</span>{" "}
+            <span className="text-crest-yellow">TIMELINE</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Journey through three epic rounds. Each battle brings you closer to legendary status.
           </p>
         </motion.div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-muted">
-            <motion.div
-              className="absolute top-0 left-0 w-full bg-gradient-to-b from-crest-red via-crest-yellow to-crest-green"
-              style={{ height: lineHeight }}
-            />
-          </div>
+        {/* Sacred Timeline SVG with Nodes */}
+        <div className="relative w-full max-w-5xl mx-auto mb-12">
+          <div className="relative h-40 flex justify-between items-center px-8 md:px-16">
+            
+            {/* The Base Timeline SVG */}
+            <svg className="absolute inset-0 w-full h-full overflow-visible pointer-events-none">
+              {/* Main Golden Path */}
+              <motion.path
+                d="M 50 80 Q 250 80, 400 80 T 750 80"
+                fill="transparent"
+                stroke="hsl(48 96% 53%)"
+                strokeWidth="3"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2, ease: "easeOut" }}
+              />
+              
+              {/* Glowing effect path */}
+              <motion.path
+                d="M 50 80 Q 250 80, 400 80 T 750 80"
+                fill="transparent"
+                stroke="hsl(48 96% 53% / 0.3)"
+                strokeWidth="8"
+                filter="blur(4px)"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 0.5 }}
+                viewport={{ once: true }}
+                transition={{ duration: 2, ease: "easeOut" }}
+              />
+              
+              {/* Branching Lines - Red variant (visible on Round 2+) */}
+              <AnimatePresence>
+                {activeStep >= 1 && (
+                  <motion.path
+                    initial={{ opacity: 0, pathLength: 0 }}
+                    animate={{ opacity: 0.6, pathLength: 1 }}
+                    exit={{ opacity: 0, pathLength: 0 }}
+                    transition={{ duration: 0.8 }}
+                    d="M 400 80 Q 500 20, 700 10"
+                    fill="transparent"
+                    stroke="hsl(0 100% 50%)"
+                    strokeWidth="2"
+                    strokeDasharray="8,4"
+                  />
+                )}
+              </AnimatePresence>
+              
+              {/* Branching Lines - Cyan variant (visible on Round 3) */}
+              <AnimatePresence>
+                {activeStep >= 2 && (
+                  <>
+                    <motion.path
+                      initial={{ opacity: 0, pathLength: 0 }}
+                      animate={{ opacity: 0.7, pathLength: 1 }}
+                      exit={{ opacity: 0, pathLength: 0 }}
+                      transition={{ duration: 0.8, delay: 0.2 }}
+                      d="M 400 80 Q 550 140, 720 160"
+                      fill="transparent"
+                      stroke="hsl(180 100% 50%)"
+                      strokeWidth="2"
+                    />
+                    {/* Nexus pulse at intersection */}
+                    <motion.circle
+                      cx="400"
+                      cy="80"
+                      r="8"
+                      fill="hsl(48 96% 53%)"
+                      animate={{ 
+                        r: [8, 15, 8],
+                        opacity: [1, 0.3, 1]
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  </>
+                )}
+              </AnimatePresence>
+            </svg>
 
-          {/* Timeline items */}
-          <div className="space-y-24">
-            {rounds.map((round, index) => {
-              const Icon = round.icon;
-              const isEven = index % 2 === 0;
-
-              return (
-                <motion.div
+            {/* Timeline Nodes */}
+            <div className="relative z-10 flex justify-between w-full">
+              {rounds.map((round) => (
+                <TimelineNode 
                   key={round.id}
-                  className={`relative flex items-center ${isEven ? "md:flex-row" : "md:flex-row-reverse"}`}
-                  initial={{ opacity: 0, x: isEven ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8 }}
-                >
-                  {/* Timeline dot */}
-                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 z-10">
-                    <motion.div
-                      className={`w-12 h-12 rounded-full bg-gradient-to-br ${round.gradientClass} flex items-center justify-center`}
-                      whileInView={{ scale: [0.8, 1.2, 1] }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <Icon className="w-6 h-6 text-foreground" />
-                    </motion.div>
-                  </div>
+                  round={round}
+                  isActive={activeStep === round.id}
+                  onClick={() => setActiveStep(round.id)}
+                />
+              ))}
+            </div>
+          </div>
+          
+          {/* TVA Status Indicator */}
+          <motion.div 
+            className="absolute bottom-0 left-4 font-mono text-[10px] text-crest-yellow/80 uppercase tracking-[0.2em]"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            Status: {activeStep === 2 ? "⚠ NEXUS EVENT DETECTED" : activeStep === 1 ? "⚡ VARIANCE BRANCHING" : "✓ TIMELINE STABLE"}
+          </motion.div>
+        </div>
 
-                  {/* Content */}
-                  <div className={`ml-16 md:ml-0 md:w-1/2 ${isEven ? "md:pr-16" : "md:pl-16"}`}>
-                    <div className="glass-card p-8 relative overflow-hidden group hover:border-white/20 transition-all duration-500">
-                      {/* Special effect based on round */}
-                      {getEffect(round.effect)}
+        {/* Round Details Card */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeStep}
+            className="max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.5 }}
+          >
+            {(() => {
+              const round = rounds[activeStep];
+              const Icon = round.icon;
+              
+              return (
+                <div className="glass-card p-8 md:p-12 relative overflow-hidden border border-crest-yellow/20">
+                  {/* Animated border glow */}
+                  <motion.div
+                    className="absolute inset-0 rounded-xl pointer-events-none"
+                    style={{
+                      background: `linear-gradient(135deg, transparent 40%, hsl(48 96% 53% / 0.1) 50%, transparent 60%)`,
+                      backgroundSize: '200% 200%',
+                    }}
+                    animate={{
+                      backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+                    }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                  />
+                  
+                  <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                    {/* Icon */}
+                    <motion.div
+                      className={`w-24 h-24 rounded-full bg-gradient-to-br ${round.gradientClass} flex items-center justify-center shrink-0`}
+                      animate={{ 
+                        rotate: [0, 5, -5, 0],
+                      }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <Icon className="w-12 h-12 text-foreground" />
+                    </motion.div>
+                    
+                    {/* Content */}
+                    <div className="flex-1 text-center md:text-left">
+                      <span className={`font-display text-sm tracking-widest ${round.accentColorClass}`}>
+                        {round.subtitle}
+                      </span>
+                      <h3 className={`font-display text-4xl md:text-5xl font-black bg-gradient-to-r ${round.gradientClass} bg-clip-text text-transparent mt-2 mb-2`}>
+                        {round.title}
+                      </h3>
+                      <p className="font-display text-sm tracking-wider text-muted-foreground mb-4">
+                        {round.theme}
+                      </p>
+                      <p className="text-foreground/80 mb-6 max-w-xl">
+                        {round.description}
+                      </p>
                       
-                      <div className="relative z-10">
-                        {/* Round number */}
-                        <span className={`font-display text-sm tracking-widest ${round.accentColorClass}`}>
-                          {round.subtitle}
-                        </span>
-                        
-                        {/* Title */}
-                        <h3 className={`font-display text-3xl md:text-4xl font-black bg-gradient-to-r ${round.gradientClass} bg-clip-text text-transparent mt-2 mb-1`}>
-                          {round.title}
-                        </h3>
-                        
-                        {/* Theme */}
-                        <p className="font-display text-sm tracking-wider text-muted-foreground mb-4">
-                          {round.theme}
-                        </p>
-                        
-                        {/* Description */}
-                        <p className="text-foreground/80 mb-6">
-                          {round.description}
-                        </p>
-                        
-                        {/* Features */}
-                        <div className="flex flex-wrap gap-2">
-                          {round.features.map((feature) => (
-                            <span
-                              key={feature}
-                              className={`px-3 py-1 text-xs font-display tracking-wider ${round.accentBgClass} ${round.accentColorClass} rounded-full`}
-                            >
-                              {feature}
-                            </span>
-                          ))}
-                        </div>
+                      {/* Features */}
+                      <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                        {round.features.map((feature, i) => (
+                          <motion.span
+                            key={feature}
+                            className={`px-4 py-2 text-sm font-display tracking-wider ${round.accentBgClass} ${round.accentColorClass} rounded-full border border-current/20`}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                          >
+                            {feature}
+                          </motion.span>
+                        ))}
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
-            })}
-          </div>
-        </div>
+            })()}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

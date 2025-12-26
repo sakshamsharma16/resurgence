@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
-import crestLogo from "@/assets/crest-logo.png";
+import crestDarkLogo from "@/assets/crest-dark-logo.jpg";
 import GlitchText from "./GlitchText";
 import TechHUD from "./TechHUD";
 import CosmicBackground from "./CosmicBackground";
@@ -62,7 +62,7 @@ const HeroSection = () => {
             </span>
           </motion.div>
 
-          {/* Floating CREST Logo with 3D effect */}
+          {/* Dark CREST Logo with 3D effect */}
           <motion.div
             className="mb-8 inline-block perspective-1000"
             initial={{ opacity: 0, scale: 0.5, rotateY: -180 }}
@@ -70,21 +70,31 @@ const HeroSection = () => {
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
             <motion.div
-              className="relative w-32 h-32 md:w-48 md:h-48 mx-auto preserve-3d"
+              className="relative w-40 h-40 md:w-56 md:h-56 mx-auto preserve-3d"
               animate={{ 
                 y: [-10, 10, -10],
                 rotateY: [0, 5, 0, -5, 0]
               }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             >
-              {/* CREST Logo Image */}
+              {/* CREST Dark Logo Image */}
               <img 
-                src={crestLogo} 
+                src={crestDarkLogo} 
                 alt="CREST Logo" 
-                className="w-full h-full object-contain drop-shadow-[0_0_30px_hsl(var(--crest-blue)/0.5)]"
+                className="w-full h-full object-contain drop-shadow-[0_0_40px_hsl(var(--crest-blue)/0.6)]"
               />
               {/* Glow effect */}
-              <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-crest-red/20 via-crest-yellow/20 to-crest-blue/20 blur-xl -z-10 animate-pulse-glow" />
+              <motion.div 
+                className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-crest-red/30 via-crest-yellow/20 to-crest-blue/30 blur-2xl -z-10"
+                animate={{ opacity: [0.4, 0.7, 0.4] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              />
+              {/* Rotating ring */}
+              <motion.div
+                className="absolute -inset-4 border-2 border-crest-blue/30 rounded-full"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              />
             </motion.div>
           </motion.div>
 
@@ -128,23 +138,15 @@ const HeroSection = () => {
             FEBRUARY 2025 | 24-HOUR TECHNICAL SHOWDOWN | LPU CAMPUS
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* Single CTA Button */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex justify-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
             <motion.button
-              className="group px-8 py-4 bg-gradient-to-r from-crest-red to-crest-yellow font-display font-bold text-base md:text-lg tracking-wider rounded-lg glow-red transition-all duration-300 flex items-center justify-center gap-2"
-              whileHover={{ scale: 1.05, boxShadow: "0 0 50px hsl(0 100% 50% / 0.6)" }}
-              whileTap={{ scale: 0.98 }}
-            >
-              REGISTER NOW
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </motion.button>
-            <motion.button
-              className="px-8 py-4 glass-card font-display font-bold text-base md:text-lg tracking-wider text-foreground hover:bg-glass-border transition-all duration-300 border border-tactical-blue/30 hover:border-tactical-blue"
+              className="px-10 py-4 glass-card font-display font-bold text-base md:text-lg tracking-wider text-foreground hover:bg-glass-border transition-all duration-300 border border-tactical-blue/30 hover:border-tactical-blue"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >

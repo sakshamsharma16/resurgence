@@ -1,6 +1,13 @@
 import { motion } from "framer-motion";
-import avengersRoles from "@/assets/avengers-roles.png";
 import DataStreamBackground from "./DataStreamBackground";
+
+// Import Avenger logos
+import captainAmericaLogo from "@/assets/captain-america-logo.png";
+import ironManLogo from "@/assets/iron-man-logo.png";
+import thorLogo from "@/assets/thor-logo.png";
+import blackWidowLogo from "@/assets/black-widow-logo.png";
+import spiderManLogo from "@/assets/spider-man-logo.png";
+import doctorStrangeLogo from "@/assets/doctor-strange-logo.png";
 
 interface Avenger {
   name: string;
@@ -11,7 +18,7 @@ interface Avenger {
   glowClass: string;
   borderClass: string;
   description: string;
-  imagePosition: { x: number; y: number; size: number };
+  logo: string;
 }
 
 const avengers: Avenger[] = [
@@ -24,7 +31,7 @@ const avengers: Avenger[] = [
     glowClass: "glow-blue",
     borderClass: "hover:border-crest-blue",
     description: "The strategic leader who keeps the team aligned and on track.",
-    imagePosition: { x: 0, y: 0, size: 50 },
+    logo: captainAmericaLogo,
   },
   {
     name: "Lead Architect",
@@ -35,7 +42,7 @@ const avengers: Avenger[] = [
     glowClass: "glow-red",
     borderClass: "hover:border-crest-red",
     description: "The genius who designs the system's core infrastructure.",
-    imagePosition: { x: 50, y: 0, size: 50 },
+    logo: ironManLogo,
   },
   {
     name: "The Pitcher",
@@ -46,18 +53,18 @@ const avengers: Avenger[] = [
     glowClass: "glow-yellow",
     borderClass: "hover:border-crest-yellow",
     description: "The powerhouse who delivers electrifying presentations.",
-    imagePosition: { x: 0, y: 33.33, size: 50 },
+    logo: thorLogo,
   },
   {
     name: "UI/UX Design",
-    role: "Mjolnir",
-    catchphrase: '"Only the worthy can design this."',
+    role: "Black Widow",
+    catchphrase: '"I see through every user flow."',
     colorClass: "text-muted-foreground",
     bgClass: "bg-muted/30",
     glowClass: "glow-blue",
     borderClass: "hover:border-muted-foreground",
     description: "The craftsman who shapes beautiful user experiences.",
-    imagePosition: { x: 50, y: 33.33, size: 50 },
+    logo: blackWidowLogo,
   },
   {
     name: "Web Dev",
@@ -68,18 +75,18 @@ const avengers: Avenger[] = [
     glowClass: "glow-red",
     borderClass: "hover:border-crest-red",
     description: "The agile developer who crafts pixel-perfect interfaces.",
-    imagePosition: { x: 0, y: 66.66, size: 50 },
+    logo: spiderManLogo,
   },
   {
     name: "Data / AI",
-    role: "Vision",
-    catchphrase: '"I have analyzed 14 million datasets."',
+    role: "Doctor Strange",
+    catchphrase: '"I have seen 14 million possibilities."',
     colorClass: "text-crest-green",
     bgClass: "bg-crest-green/20",
     glowClass: "glow-green",
     borderClass: "hover:border-crest-green",
     description: "The visionary who harnesses the power of machine learning.",
-    imagePosition: { x: 50, y: 66.66, size: 50 },
+    logo: doctorStrangeLogo,
   },
 ];
 
@@ -88,6 +95,18 @@ const AvengersGrid = () => {
     <section id="avengers" className="relative min-h-screen py-24 px-4 overflow-hidden">
       {/* Data Stream Background */}
       <DataStreamBackground />
+      
+      {/* SHIELD Grid Background */}
+      <div 
+        className="absolute inset-0 opacity-10 pointer-events-none" 
+        style={{ 
+          backgroundImage: `
+            linear-gradient(hsl(var(--tactical-blue)) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(var(--tactical-blue)) 1px, transparent 1px)
+          `, 
+          backgroundSize: '50px 50px' 
+        }} 
+      />
 
       <div className="container mx-auto relative z-10">
         {/* Section Header */}
@@ -132,23 +151,30 @@ const AvengersGrid = () => {
               {/* Glow effect on hover */}
               <div className={`absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${avenger.glowClass} blur-xl -z-10`} />
               
-              {/* Badge Image from sprite */}
-              <div className="relative w-20 h-20 mx-auto mb-4 overflow-hidden rounded-full">
-                <div 
-                  className="w-[200%] h-[300%] bg-contain bg-no-repeat"
-                  style={{ 
-                    backgroundImage: `url(${avengersRoles})`,
-                    backgroundPosition: `${avenger.imagePosition.x}% ${avenger.imagePosition.y}%`,
-                    transform: 'scale(1.2)',
-                  }}
+              {/* Avenger Logo */}
+              <motion.div 
+                className="relative w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <img 
+                  src={avenger.logo} 
+                  alt={avenger.role}
+                  className="w-full h-full object-contain"
                 />
                 {/* Glowing ring */}
                 <motion.div
                   className={`absolute inset-0 rounded-full border-2 ${avenger.borderClass.replace('hover:', '')} opacity-0 group-hover:opacity-100`}
-                  animate={{ scale: [1, 1.1, 1] }}
+                  animate={{ scale: [1, 1.15, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
-              </div>
+                {/* Scan line */}
+                <motion.div
+                  className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-tactical-blue to-transparent opacity-0 group-hover:opacity-100"
+                  animate={{ top: ["0%", "100%", "0%"] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              </motion.div>
 
               {/* Content */}
               <h3 className={`font-display text-xl font-bold mb-1 text-center ${avenger.colorClass}`}>
@@ -164,13 +190,11 @@ const AvengersGrid = () => {
                 {avenger.catchphrase}
               </p>
 
-              {/* Scanning line effect on hover */}
-              <motion.div
-                className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-tactical-blue to-transparent opacity-0 group-hover:opacity-100"
-                initial={{ top: "0%" }}
-                whileHover={{ top: ["0%", "100%", "0%"] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
+              {/* Corner accents */}
+              <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-tactical-blue/30 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-tactical-blue/30 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-tactical-blue/30 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-tactical-blue/30 opacity-0 group-hover:opacity-100 transition-opacity" />
             </motion.div>
           ))}
         </div>
