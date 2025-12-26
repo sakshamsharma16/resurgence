@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
 import PhaseNavigation from "@/components/PhaseNavigation";
 import SystemBar from "@/components/SystemBar";
-import DataStream from "@/components/DataStream";
+
 
 const phases = [
   { id: "hero", name: "Mission Overview", label: "PHASE 1" },
@@ -67,9 +67,6 @@ const Index = () => {
             {/* System Bar Header */}
             <SystemBar />
             
-            {/* Peripheral Data Streams */}
-            <DataStream side="left" />
-            <DataStream side="right" />
             
             {/* CRT Scanline Overlay - Global */}
             <div 
