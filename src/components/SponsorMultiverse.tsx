@@ -171,11 +171,6 @@ const SponsorMultiverse = () => {
                 transition={{ delay: 0.3 + index * 0.15, type: "spring" }}
                 whileHover={{ scale: 1.2 }}
                 onClick={() => setActivePin(activePin === index ? null : index)}
-                animate={{ 
-                  boxShadow: activePin === index 
-                    ? undefined 
-                    : ["0 0 10px hsl(var(--foreground) / 0.2)", "0 0 20px hsl(var(--foreground) / 0.4)", "0 0 10px hsl(var(--foreground) / 0.2)"]
-                }}
               >
                 <Icon className="w-5 h-5 text-background" />
                 
