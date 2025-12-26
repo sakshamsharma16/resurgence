@@ -116,16 +116,6 @@
   .topographic-overlay {
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0C30 16.569 16.569 30 0 30c16.569 0 30 13.431 30 30 0-16.569 13.431-30 30-30C43.431 30 30 16.569 30 0z' fill='none' stroke='%23ffffff' stroke-opacity='0.03' stroke-width='0.5'/%3E%3C/svg%3E");
   }
-
-  .scanline-effect {
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      hsl(0 0% 100% / 0.02) 2px,
-      hsl(0 0% 100% / 0.02) 4px
-    );
-  }
   
   .bg-radial-gradient {
     background: radial-gradient(ellipse at center, transparent 0%, hsl(var(--background)) 70%);
@@ -160,6 +150,14 @@
     color: hsl(var(--crest-blue));
     animation: glitch-2 3s infinite linear alternate-reverse;
     clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+  }
+  
+  /* Chromatic aberration on hover */
+  .chromatic-hover:hover {
+    text-shadow: 
+      -2px 0 hsl(var(--crest-red)),
+      2px 0 hsl(var(--crest-blue));
+    animation: chromatic-flicker 0.3s ease-in-out;
   }
   
   /* 3D perspective */
@@ -273,6 +271,21 @@
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes chromatic-flicker {
+  0%, 100% {
+    text-shadow: -2px 0 hsl(var(--crest-red)), 2px 0 hsl(var(--crest-blue));
+  }
+  25% {
+    text-shadow: -3px 0 hsl(var(--crest-red)), 3px 0 hsl(var(--crest-blue));
+  }
+  50% {
+    text-shadow: -1px 0 hsl(var(--crest-red)), 1px 0 hsl(var(--crest-blue));
+  }
+  75% {
+    text-shadow: -2px 0 hsl(var(--crest-red)), 2px 0 hsl(var(--crest-blue));
   }
 }
 

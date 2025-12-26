@@ -144,6 +144,20 @@ const AvengersGrid = () => {
           backgroundSize: '50px 50px' 
         }} 
       />
+      
+      {/* CRT Scanline Overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-30 opacity-[0.03]"
+        style={{
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #000 2px, #000 4px)'
+        }}
+      />
+      
+      {/* Corner Targeting Brackets */}
+      <div className="absolute top-8 left-8 w-12 h-12 border-l-2 border-t-2 border-tactical-blue/60" />
+      <div className="absolute top-8 right-8 w-12 h-12 border-r-2 border-t-2 border-tactical-blue/60" />
+      <div className="absolute bottom-8 left-8 w-12 h-12 border-l-2 border-b-2 border-tactical-blue/60" />
+      <div className="absolute bottom-8 right-8 w-12 h-12 border-r-2 border-b-2 border-tactical-blue/60" />
 
       <div className="container mx-auto relative z-10">
         {/* Section Header */}

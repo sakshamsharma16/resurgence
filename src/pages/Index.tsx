@@ -9,6 +9,8 @@ import MissionBrief from "@/components/MissionBrief";
 import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
 import PhaseNavigation from "@/components/PhaseNavigation";
+import SystemBar from "@/components/SystemBar";
+import DataStream from "@/components/DataStream";
 
 const phases = [
   { id: "hero", name: "Mission Overview", label: "PHASE 1" },
@@ -57,11 +59,26 @@ const Index = () => {
       <AnimatePresence>
         {!isLoading && (
           <motion.main
-            className="min-h-screen bg-background overflow-x-hidden"
+            className="min-h-screen bg-background overflow-x-hidden pt-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
           >
+            {/* System Bar Header */}
+            <SystemBar />
+            
+            {/* Peripheral Data Streams */}
+            <DataStream side="left" />
+            <DataStream side="right" />
+            
+            {/* CRT Scanline Overlay - Global */}
+            <div 
+              className="fixed inset-0 pointer-events-none z-40 opacity-[0.02]"
+              style={{
+                background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #000 2px, #000 4px)'
+              }}
+            />
+            
             <PhaseNavigation
               phases={phases}
               activePhase={activePhase}

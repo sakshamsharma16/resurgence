@@ -28,7 +28,9 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
   const [messageIndex, setMessageIndex] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [scanAngle, setScanAngle] = useState(0);
 
+  // Faster loading - 50ms intervals instead of 60ms, increment by 3 instead of 2
   useEffect(() => {
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
@@ -36,9 +38,9 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
           clearInterval(progressInterval);
           return 100;
         }
-        return prev + 2;
+        return prev + 3;
       });
-    }, 60);
+    }, 50);
 
     return () => clearInterval(progressInterval);
   }, []);
@@ -52,17 +54,25 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
         }
         return prev + 1;
       });
-    }, 700);
+    }, 500); // Faster message changes
 
     return () => clearInterval(messageInterval);
+  }, []);
+  
+  // Biometric scan rotation
+  useEffect(() => {
+    const scanInterval = setInterval(() => {
+      setScanAngle(prev => (prev + 3) % 360);
+    }, 16);
+    return () => clearInterval(scanInterval);
   }, []);
 
   useEffect(() => {
     if (progress >= 100) {
       setTimeout(() => {
         setIsComplete(true);
-        setTimeout(onComplete, 500);
-      }, 500);
+        setTimeout(onComplete, 300); // Faster transition
+      }, 300);
     }
   }, [progress, onComplete]);
 
@@ -100,45 +110,60 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
             </motion.div>
           </div>
 
-          {/* Center content */}
+          {/* Center content - Biometric Scanner */}
           <div className="relative z-10 flex flex-col items-center">
-            {/* Biometric scanner frame */}
+            {/* Retinal/Biometric scanner frame */}
             <div className="relative w-48 h-48 md:w-64 md:h-64 mb-8">
-              {/* Scanner border */}
-              <div className="absolute inset-0 border-2 border-tactical-blue/50 rounded-lg">
-                {/* Corner accents */}
-                <div className="absolute -top-1 -left-1 w-6 h-6 border-t-2 border-l-2 border-tactical-blue" />
-                <div className="absolute -top-1 -right-1 w-6 h-6 border-t-2 border-r-2 border-tactical-blue" />
-                <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-2 border-l-2 border-tactical-blue" />
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-2 border-r-2 border-tactical-blue" />
-              </div>
-
-              {/* Scanning line */}
+              {/* Rotating scanner ring */}
               <motion.div
-                className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-tactical-blue to-transparent"
-                style={{ boxShadow: "0 0 20px hsl(var(--tactical-blue))" }}
-                animate={{ top: ["0%", "100%", "0%"] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 rounded-full border-4 border-transparent"
+                style={{
+                  borderTopColor: 'hsl(var(--tactical-blue))',
+                  borderRightColor: 'hsl(var(--tactical-blue) / 0.3)',
+                  transform: `rotate(${scanAngle}deg)`,
+                }}
               />
+              
+              {/* Inner scanner ring */}
+              <motion.div
+                className="absolute inset-4 rounded-full border-2 border-tactical-blue/30"
+                style={{
+                  transform: `rotate(${-scanAngle * 0.5}deg)`,
+                }}
+              />
+              
+              {/* Scanner crosshairs */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute w-full h-[1px] bg-tactical-blue/30" />
+                <div className="absolute w-[1px] h-full bg-tactical-blue/30" />
+              </div>
+              
+              {/* Center target circles */}
+              <div className="absolute inset-8 rounded-full border border-tactical-blue/20" />
+              <div className="absolute inset-12 rounded-full border border-tactical-blue/10" />
 
               {/* Logo */}
               <motion.img
                 src={crestLogo}
                 alt="CREST Logo"
-                className="absolute inset-4 w-40 h-40 md:w-56 md:h-56 object-contain filter brightness-75 grayscale-[30%]"
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              />
-
-              {/* Glow effect */}
-              <motion.div
-                className="absolute inset-0 rounded-lg"
-                style={{
-                  background: "radial-gradient(circle, hsl(var(--tactical-blue) / 0.2) 0%, transparent 70%)"
-                }}
-                animate={{ opacity: [0.3, 0.6, 0.3] }}
+                className="absolute inset-8 w-32 h-32 md:w-48 md:h-48 object-contain filter brightness-75 grayscale-[30%]"
+                animate={{ opacity: [0.6, 1, 0.6] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               />
+
+              {/* Scanning sweep */}
+              <motion.div
+                className="absolute inset-0 rounded-full overflow-hidden"
+                style={{
+                  background: `conic-gradient(from ${scanAngle}deg, transparent 0deg, hsl(var(--tactical-blue) / 0.3) 30deg, transparent 60deg)`,
+                }}
+              />
+              
+              {/* Corner brackets */}
+              <div className="absolute -top-1 -left-1 w-8 h-8 border-t-2 border-l-2 border-tactical-blue" />
+              <div className="absolute -top-1 -right-1 w-8 h-8 border-t-2 border-r-2 border-tactical-blue" />
+              <div className="absolute -bottom-1 -left-1 w-8 h-8 border-b-2 border-l-2 border-tactical-blue" />
+              <div className="absolute -bottom-1 -right-1 w-8 h-8 border-b-2 border-r-2 border-tactical-blue" />
             </div>
 
             {/* Loading message */}

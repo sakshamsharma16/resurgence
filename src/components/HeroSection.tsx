@@ -43,8 +43,11 @@ const HeroSection = () => {
         />
       </div>
 
-      {/* Scanline overlay */}
-      <div className="absolute inset-0 scanline-effect pointer-events-none" />
+      {/* Corner Targeting Brackets */}
+      <div className="absolute top-16 left-4 w-16 h-16 border-l-2 border-t-2 border-crest-blue/40 z-20" />
+      <div className="absolute top-16 right-4 w-16 h-16 border-r-2 border-t-2 border-crest-blue/40 z-20" />
+      <div className="absolute bottom-16 left-4 w-16 h-16 border-l-2 border-b-2 border-crest-blue/40 z-20" />
+      <div className="absolute bottom-16 right-4 w-16 h-16 border-r-2 border-b-2 border-crest-blue/40 z-20" />
 
       {/* Main content */}
       <div className="container mx-auto px-4 relative z-10">

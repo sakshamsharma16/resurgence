@@ -108,15 +108,19 @@ const ShieldCommand = () => {
       {/* Tactical grid background */}
       <div className="absolute inset-0 tactical-grid" />
       
-      {/* Moving Scan Line */}
-      <motion.div
-        className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-tactical-blue to-transparent pointer-events-none z-20"
-        animate={{ top: ['0%', '100%'] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+      {/* CRT Scanline Overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-30 opacity-[0.03]"
+        style={{
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #000 2px, #000 4px)'
+        }}
       />
       
-      {/* Scanline overlay */}
-      <div className="absolute inset-0 scanline-effect pointer-events-none opacity-50" />
+      {/* Corner Targeting Brackets */}
+      <div className="absolute top-8 left-8 w-12 h-12 border-l-2 border-t-2 border-tactical-blue/60" />
+      <div className="absolute top-8 right-8 w-12 h-12 border-r-2 border-t-2 border-tactical-blue/60" />
+      <div className="absolute bottom-8 left-8 w-12 h-12 border-l-2 border-b-2 border-tactical-blue/60" />
+      <div className="absolute bottom-8 right-8 w-12 h-12 border-r-2 border-b-2 border-tactical-blue/60" />
       
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-card/30 to-background" />

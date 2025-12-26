@@ -55,9 +55,10 @@ const rounds: Round[] = [
   },
 ];
 
-// TVA TemPad style ticker
+// TVA TemPad style ticker with Timeline Purity
 const TVATicker = ({ activeStep }: { activeStep: number }) => {
   const [tickerValue, setTickerValue] = useState("0000.0000.0000");
+  const [purity, setPurity] = useState(98.4);
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -66,19 +67,26 @@ const TVATicker = ({ activeStep }: { activeStep: number }) => {
         .map(() => Math.floor(Math.random() * 10000).toString().padStart(4, '0'))
         .join('.');
       setTickerValue(newValue);
-    }, 150);
+      // Purity decreases as we approach Nexus
+      setPurity(98.4 - (activeStep * 15) + (Math.random() * 2 - 1));
+    }, 100);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [activeStep]);
   
   return (
     <motion.div
-      className="absolute top-4 right-4 font-mono text-[10px] text-crest-yellow/80 flex items-center gap-2"
-      animate={{ opacity: [0.5, 1, 0.5] }}
-      transition={{ duration: 0.5, repeat: Infinity }}
+      className="absolute top-4 right-4 font-mono text-[10px] flex flex-col items-end gap-1"
+      animate={{ opacity: [0.7, 1, 0.7] }}
+      transition={{ duration: 0.3, repeat: Infinity }}
     >
-      <AlertTriangle className="w-3 h-3" />
-      <span className="tracking-widest">TVA-{tickerValue}</span>
+      <div className="flex items-center gap-2 text-crest-yellow/80">
+        <AlertTriangle className="w-3 h-3" />
+        <span className="tracking-widest">TVA-{tickerValue}</span>
+      </div>
+      <div className={`tracking-widest ${purity > 80 ? 'text-tactical-green' : purity > 50 ? 'text-crest-yellow' : 'text-crest-red'}`}>
+        TIMELINE PURITY: {purity.toFixed(1)}%
+      </div>
     </motion.div>
   );
 };
@@ -152,20 +160,19 @@ const SagaTimeline = () => {
         }} 
       />
       
-      {/* Moving Scan Line */}
-      <motion.div
-        className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-crest-yellow to-transparent pointer-events-none z-20"
-        animate={{ top: ['0%', '100%'] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-      />
-      
-      {/* Scanline overlay */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
+      {/* CRT Scanline Overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-30 opacity-[0.03]"
         style={{
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px)'
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #000 2px, #000 4px)'
         }}
       />
+      
+      {/* Corner Targeting Brackets */}
+      <div className="absolute top-8 left-8 w-12 h-12 border-l-2 border-t-2 border-crest-yellow/60" />
+      <div className="absolute top-8 right-8 w-12 h-12 border-r-2 border-t-2 border-crest-yellow/60" />
+      <div className="absolute bottom-8 left-8 w-12 h-12 border-l-2 border-b-2 border-crest-yellow/60" />
+      <div className="absolute bottom-8 right-8 w-12 h-12 border-r-2 border-b-2 border-crest-yellow/60" />
       
       <div className="container mx-auto relative">
         {/* Section Header */}

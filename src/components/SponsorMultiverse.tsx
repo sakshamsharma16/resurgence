@@ -74,12 +74,19 @@ const SponsorMultiverse = () => {
         }} 
       />
       
-      {/* Moving Scan Line */}
-      <motion.div
-        className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-tactical-blue to-transparent pointer-events-none z-20"
-        animate={{ top: ['0%', '100%'] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+      {/* CRT Scanline Overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-30 opacity-[0.03]"
+        style={{
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #000 2px, #000 4px)'
+        }}
       />
+      
+      {/* Corner Targeting Brackets */}
+      <div className={`absolute top-8 left-8 w-12 h-12 border-l-2 border-t-2 ${blueprintMode ? 'border-[#daa520]/60' : 'border-tactical-blue/60'}`} />
+      <div className={`absolute top-8 right-8 w-12 h-12 border-r-2 border-t-2 ${blueprintMode ? 'border-[#daa520]/60' : 'border-tactical-blue/60'}`} />
+      <div className={`absolute bottom-8 left-8 w-12 h-12 border-l-2 border-b-2 ${blueprintMode ? 'border-[#daa520]/60' : 'border-tactical-blue/60'}`} />
+      <div className={`absolute bottom-8 right-8 w-12 h-12 border-r-2 border-b-2 ${blueprintMode ? 'border-[#daa520]/60' : 'border-tactical-blue/60'}`} />
       
       {/* Radar sweep effect */}
       <motion.div
@@ -112,14 +119,6 @@ const SponsorMultiverse = () => {
           <img src={logo.src} alt={logo.name} className="w-full h-full object-contain filter grayscale" />
         </motion.div>
       ))}
-      
-      {/* Scanlines */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-20"
-        style={{
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px)'
-        }}
-      />
       
       <div className="container mx-auto relative z-10">
         {/* Header with Blueprint Toggle */}
