@@ -243,18 +243,18 @@ const SponsorMultiverse = () => {
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.5 + i * 0.1 }}
                 >
-                  <motion.div
+                <motion.div
                     className={`relative w-6 h-6 flex items-center justify-center`}
                     whileHover={{ scale: 1.3 }}
                     onClick={() => setSelectedNode(selectedNode?.id === node.id ? null : node)}
                   >
                     {/* Ping animation */}
                     <motion.div
-                      className={`absolute inset-0 rounded-full ${blueprintMode ? 'bg-[#daa520]' : 'bg-tactical-blue'}`}
+                      className={`absolute inset-0 rounded-full ${blueprintMode ? 'bg-tactical-blue' : 'bg-[#daa520]'}`}
                       animate={{ scale: [1, 2], opacity: [0.5, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     />
-                    <MapPin className={`w-5 h-5 relative z-10 ${blueprintMode ? 'text-[#daa520]' : 'text-tactical-blue'} drop-shadow-lg`} />
+                    <MapPin className={`w-5 h-5 relative z-10 ${blueprintMode ? 'text-tactical-blue' : 'text-[#daa520]'} drop-shadow-lg`} />
                   </motion.div>
                   
                   {/* Tooltip */}

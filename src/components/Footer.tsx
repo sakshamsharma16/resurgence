@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Instagram, Twitter, Linkedin } from "lucide-react";
+import { Mail, Phone, MapPin, Instagram, Linkedin, Link } from "lucide-react";
 import crestLogoDark from "@/assets/crest-logo-dark.png";
 
 const Footer = () => {
@@ -109,10 +109,16 @@ const Footer = () => {
             
             {/* Social icons */}
             <div className="flex gap-4 mt-6">
-              {[Instagram, Twitter, Linkedin].map((Icon, index) => (
+              {[
+                { Icon: Instagram, href: "https://www.instagram.com/crest.lpu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
+                { Icon: Linkedin, href: "https://www.linkedin.com/company/crest-lpu/" },
+                { Icon: Link, href: "https://linktr.ee/CREST_Cluster" },
+              ].map(({ Icon, href }, index) => (
                 <motion.a
                   key={index}
-                  href="#"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 glass-card flex items-center justify-center rounded-lg hover:bg-glass-border transition-colors backdrop-blur-2xl bg-background/5"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}

@@ -29,7 +29,7 @@ const avengers: Avenger[] = [
     role: "Captain America",
     catchphrase: '"I can code this all day."',
     colorClass: "text-crest-blue",
-    bgClass: "bg-crest-blue/20",
+    bgClass: "bg-crest-blue",
     glowClass: "glow-blue",
     borderClass: "hover:border-crest-blue",
     description: "The strategic leader who keeps the team aligned and on track.",
@@ -42,7 +42,7 @@ const avengers: Avenger[] = [
     role: "Iron Man",
     catchphrase: '"I am... the architect."',
     colorClass: "text-crest-red",
-    bgClass: "bg-crest-red/20",
+    bgClass: "bg-crest-red",
     glowClass: "glow-red",
     borderClass: "hover:border-crest-red",
     description: "The genius who designs the system's core infrastructure.",
@@ -55,7 +55,7 @@ const avengers: Avenger[] = [
     role: "Thor",
     catchphrase: '"Bring me... the investors!"',
     colorClass: "text-crest-yellow",
-    bgClass: "bg-crest-yellow/20",
+    bgClass: "bg-crest-yellow",
     glowClass: "glow-yellow",
     borderClass: "hover:border-crest-yellow",
     description: "The powerhouse who delivers electrifying presentations.",
@@ -68,7 +68,7 @@ const avengers: Avenger[] = [
     role: "Black Widow",
     catchphrase: '"I see through every user flow."',
     colorClass: "text-muted-foreground",
-    bgClass: "bg-muted/30",
+    bgClass: "bg-muted-foreground",
     glowClass: "glow-blue",
     borderClass: "hover:border-muted-foreground",
     description: "The craftsman who shapes beautiful user experiences.",
@@ -81,7 +81,7 @@ const avengers: Avenger[] = [
     role: "Spider-Man",
     catchphrase: '"With great code comes great responsibility."',
     colorClass: "text-crest-red",
-    bgClass: "bg-crest-red/20",
+    bgClass: "bg-crest-red",
     glowClass: "glow-red",
     borderClass: "hover:border-crest-red",
     description: "The agile developer who crafts pixel-perfect interfaces.",
@@ -94,7 +94,7 @@ const avengers: Avenger[] = [
     role: "Doctor Strange",
     catchphrase: '"I have seen 14 million possibilities."',
     colorClass: "text-crest-green",
-    bgClass: "bg-crest-green/20",
+    bgClass: "bg-crest-green",
     glowClass: "glow-green",
     borderClass: "hover:border-crest-green",
     description: "The visionary who harnesses the power of machine learning.",
@@ -257,7 +257,7 @@ const AvengersGrid = () => {
               <div className="flex justify-center">
                 <PowerMeter 
                   level={avenger.powerLevel} 
-                  color={avenger.bgClass.replace('/20', '')} 
+                  color={avenger.bgClass} 
                 />
               </div>
               
