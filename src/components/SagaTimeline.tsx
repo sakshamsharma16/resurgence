@@ -38,7 +38,7 @@ const rounds: Round[] = [
     theme: "The Manifestation",
     description: "The stakes are raised. Build something extraordinary as teams race to manifest their vision before the snap erases half the competition.",
     gradientClass: "from-purple-600 to-crest-yellow",
-    icon: Infinity,
+    icon: InfinityIcon,
     accentColorClass: "text-crest-yellow",
     accentBgClass: "bg-crest-yellow/20",
     features: ["Full Stack Sprint", "Integration Challenge", "The Snap Elimination"],
